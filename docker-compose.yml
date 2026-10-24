@@ -1,0 +1,16 @@
+services:
+  supportbot:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    # host-сеть только ради Postgres SOLObot на 127.0.0.1:5432; бот не слушает ни одного порта
+    network_mode: host
+    read_only: true
+    tmpfs: [/tmp]
+    volumes:
+      - ./data:/bot/data
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
