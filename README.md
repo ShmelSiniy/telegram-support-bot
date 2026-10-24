@@ -71,6 +71,7 @@
 | `REOPEN_HOURS` | окно переоткрытия автозакрытого тикета |
 | `SPAM_LIMIT` / `SPAM_WINDOW` | антиспам: сообщений за N секунд |
 | `ASK_RATING` | запрашивать оценку после закрытия |
+| `HEALTH_HOST` / `HEALTH_PORT` | необязательный `GET /health` для внешнего сторожа (пусто — выключено); привязывайте к приватному адресу |
 | `DB_PATH` | путь к SQLite |
 
 ### Безопасность
@@ -153,6 +154,7 @@ In the General topic: `/open` — active tickets · `/stats` — statistics · `
 | `REOPEN_HOURS` | window for reopening an auto-closed ticket |
 | `SPAM_LIMIT` / `SPAM_WINDOW` | anti-flood: messages per N seconds |
 | `ASK_RATING` | ask for a rating after closing |
+| `HEALTH_HOST` / `HEALTH_PORT` | optional `GET /health` for an external watchdog (empty — disabled); bind it to a private address |
 | `DB_PATH` | SQLite path |
 
 ### Security

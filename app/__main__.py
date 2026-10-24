@@ -9,6 +9,7 @@ from aiogram.types import BotCommand, BotCommandScopeAllPrivateChats, BotCommand
 from .config import Settings
 from .db import Store
 from .handlers import client, staff
+from .health import Health
 from .service import Service
 from .solo import Solo
 
@@ -52,11 +53,20 @@ async def main() -> None:
     )
 
     task = asyncio.create_task(auto_close_loop(service))
+    health = Health()
+    health_task = health_server = None
+    if cfg.health_host:
+        health_server = await health.serve(cfg.health_host, cfg.health_port)
+        health_task = asyncio.create_task(health.heartbeat(bot))
     try:
         await bot.delete_webhook(drop_pending_updates=False)
         await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
     finally:
         task.cancel()
+        if health_task:
+            health_task.cancel()
+        if health_server:
+            health_server.close()
         await solo.close()
         await store.close()
         await bot.session.close()

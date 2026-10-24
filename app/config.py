@@ -15,3 +15,7 @@ class Settings(BaseSettings):
     spam_limit: int = 8
     spam_window: int = 60
     ask_rating: bool = True
+
+    # Optional health endpoint for a watchdog; empty host = disabled.
+    health_host: str = ""
+    health_port: int = 8081
