@@ -36,9 +36,9 @@
 4. **(Опционально) Карточка из SOLObot.** Создайте read-only роль в Postgres SOLObot и укажите её в `SOLO_DSN`. В `SOLO_DSN` подставьте то же имя базы (`…/имя_базы_solobot`). Если `SOLO_DSN` пустой, карточка будет только с данными Telegram.
    ```bash
    SOLO_DB=имя_базы_solobot   # имя базы данных SOLObot
-   sudo -u postgres psql -d "$SOLO_DB" -v db="$SOLO_DB" <<'SQL'
+   sudo -u postgres psql -d "$SOLO_DB" -v SOLO_DB="$SOLO_DB" <<'SQL'
    CREATE ROLE support_ro LOGIN PASSWORD 'CHANGE_ME';
-   GRANT CONNECT ON DATABASE :"db" TO support_ro;
+   GRANT CONNECT ON DATABASE :"SOLO_DB" TO support_ro;
    GRANT USAGE ON SCHEMA public TO support_ro;
    GRANT SELECT ON users, identities, keys, tariffs, payments,
                    key_traffic_history, manual_bans, blocked_users TO support_ro;
@@ -118,9 +118,9 @@ Requires Docker with Compose and a host that can reach api.telegram.org.
 4. **(Optional) SOLObot client card.** Create a read-only role in the SOLObot Postgres and put it in `SOLO_DSN`. If `SOLO_DSN` is empty, the card contains Telegram data only.
    ```bash
    SOLO_DB=your_solobot_db_name   # name of the SOLObot database
-   sudo -u postgres psql -d "$SOLO_DB" -v db="$SOLO_DB" <<'SQL'
+   sudo -u postgres psql -d "$SOLO_DB" -v SOLO_DB="$SOLO_DB" <<'SQL'
    CREATE ROLE support_ro LOGIN PASSWORD 'CHANGE_ME';
-   GRANT CONNECT ON DATABASE :"db" TO support_ro;
+   GRANT CONNECT ON DATABASE :"SOLO_DB" TO support_ro;
    GRANT USAGE ON SCHEMA public TO support_ro;
    GRANT SELECT ON users, identities, keys, tariffs, payments,
                    key_traffic_history, manual_bans, blocked_users TO support_ro;
