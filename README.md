@@ -35,10 +35,10 @@
    ```
 4. **(Опционально) Карточка из SOLObot.** Создайте read-only роль в Postgres SOLObot и укажите её в `SOLO_DSN`. В `SOLO_DSN` подставьте то же имя базы (`…/имя_базы_solobot`). Если `SOLO_DSN` пустой, карточка будет только с данными Telegram.
    ```bash
-   SOLO_DB=имя_базы_solobot   # имя базы данных SOLObot
-   sudo -u postgres psql -d "$SOLO_DB" -v SOLO_DB="$SOLO_DB" <<'SQL'
+   DBNAME=имя_базы_solobot   # только для этой команды, в .env не нужна
+   sudo -u postgres psql -d "$DBNAME" -v DBNAME="$DBNAME" <<'SQL'
    CREATE ROLE support_ro LOGIN PASSWORD 'CHANGE_ME';
-   GRANT CONNECT ON DATABASE :"SOLO_DB" TO support_ro;
+   GRANT CONNECT ON DATABASE :"DBNAME" TO support_ro;
    GRANT USAGE ON SCHEMA public TO support_ro;
    GRANT SELECT ON users, identities, keys, tariffs, payments,
                    key_traffic_history, manual_bans, blocked_users TO support_ro;
@@ -65,7 +65,7 @@
 |---|---|
 | `BOT_TOKEN` | токен бота |
 | `FORUM_CHAT_ID` | ID форум-группы операторов |
-| `SOLO_DSN` | read-only DSN Postgres SOLObot (пусто — без карточки из SOLObot) |
+| `SOLO_DSN` | read-only DSN Postgres SOLObot, имя базы — в конце DSN (пусто — без карточки из SOLObot) |
 | `TICKET_START` | с какого номера начинать нумерацию |
 | `AUTO_CLOSE_HOURS` | автозакрытие при молчании клиента, 0 — выключено |
 | `REOPEN_HOURS` | окно переоткрытия автозакрытого тикета |
@@ -117,10 +117,10 @@ Requires Docker with Compose and a host that can reach api.telegram.org.
    ```
 4. **(Optional) SOLObot client card.** Create a read-only role in the SOLObot Postgres and put it in `SOLO_DSN`. If `SOLO_DSN` is empty, the card contains Telegram data only.
    ```bash
-   SOLO_DB=your_solobot_db_name   # name of the SOLObot database
-   sudo -u postgres psql -d "$SOLO_DB" -v SOLO_DB="$SOLO_DB" <<'SQL'
+   DBNAME=your_solobot_db_name   # only for this command, not needed in .env
+   sudo -u postgres psql -d "$DBNAME" -v DBNAME="$DBNAME" <<'SQL'
    CREATE ROLE support_ro LOGIN PASSWORD 'CHANGE_ME';
-   GRANT CONNECT ON DATABASE :"SOLO_DB" TO support_ro;
+   GRANT CONNECT ON DATABASE :"DBNAME" TO support_ro;
    GRANT USAGE ON SCHEMA public TO support_ro;
    GRANT SELECT ON users, identities, keys, tariffs, payments,
                    key_traffic_history, manual_bans, blocked_users TO support_ro;
@@ -147,7 +147,7 @@ In the General topic: `/open` — active tickets · `/stats` — statistics · `
 |---|---|
 | `BOT_TOKEN` | bot token |
 | `FORUM_CHAT_ID` | operators' forum group ID |
-| `SOLO_DSN` | read-only SOLObot Postgres DSN (empty — no SOLObot card) |
+| `SOLO_DSN` | read-only SOLObot Postgres DSN, the database name is the last part of the DSN (empty — no SOLObot card) |
 | `TICKET_START` | number to continue ticket numbering from |
 | `AUTO_CLOSE_HOURS` | auto-close after client silence, 0 — off |
 | `REOPEN_HOURS` | window for reopening an auto-closed ticket |
